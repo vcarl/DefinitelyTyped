@@ -42,6 +42,10 @@ export interface RecordLink {
     templated?: boolean;
 }
 
+export type IssuedAssetType = "credit_alphanum4" | "credit_alphanum12";
+export type NativeAssetType = "native";
+export type AssetType = IssuedAssetType | NativeAssetType;
+
 /* Due to a bug with the recursive function requests */
 export interface CollectionRecord<T extends Record> {
     _links: {
@@ -82,12 +86,12 @@ export interface AccountRecord extends Record {
     balances: Array<
     {
         balance: string
-        asset_type: 'native'
+        asset_type: NativeAssetType
     } |
     {
         balance: string
         limit: string
-        asset_type: 'credit_alphanum4' | 'credit_alphanum12'
+        asset_type: IssuedAssetType
         asset_code: string
         asset_issuer: string
     }
@@ -110,7 +114,7 @@ export interface AccountRecord extends Record {
 }
 
 export interface AssetRecord extends Record {
-    asset_type: 'credit_alphanum4' | 'credit_alphanum12';
+    asset_type: IssuedAssetType;
     asset_code: string;
     asset_issuer: string;
     paging_token: string;
@@ -415,12 +419,12 @@ export class AccountResponse implements AccountRecord {
     balances: Array<
         {
             balance: string
-            asset_type: 'native'
+            asset_type: NativeAssetType
         } |
         {
             balance: string
             limit: string
-            asset_type: 'credit_alphanum4' | 'credit_alphanum12'
+            asset_type: IssuedAssetType
             asset_code: string
             asset_issuer: string
         }
@@ -452,7 +456,7 @@ export class Asset {
 
     getCode(): string;
     getIssuer(): string;
-    getAssetType(): 'native' | 'credit_alphanum4' | 'credit_alphanum12';
+    getAssetType(): AssetType;
     isNative(): boolean;
     equals(other: Asset): boolean;
 
